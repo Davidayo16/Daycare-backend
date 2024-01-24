@@ -14,7 +14,12 @@ import { v4 as uuidv4 } from "uuid";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: ["https://daycare-y9sb.onrender.com", "http://localhost:3000"],
+  // You can add more allowed origins to the array above
+};
+
+app.use(cors(corsOptions));
 
 app.use(morgan());
 app.use("/webhook", express.raw({ type: "application/json" }));
@@ -166,12 +171,8 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 1000;
-const httpServer = createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    origin: process.env.REACT_APP_URL, // Replace with your frontend URL
-  },
-});
+
+
 const start = async () => {
   try {
     await connectDatabase(process.env.MONGO_URL);
