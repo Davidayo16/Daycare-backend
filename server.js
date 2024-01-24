@@ -166,6 +166,12 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 1000;
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.REACT_APP_URL, // Replace with your frontend URL
+  },
+});
 const start = async () => {
   try {
     await connectDatabase(process.env.MONGO_URL);
