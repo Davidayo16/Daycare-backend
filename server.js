@@ -67,8 +67,8 @@ app.post("/create-checkout-session", async (req, res) => {
     ],
     mode: "payment",
     client_reference_id: billingId, // Pass the billing ID here
-    success_url: `${YOUR_DOMAIN}/success/${uniqueToken}?billingId=${billingId}`,
-    cancel_url: `${YOUR_DOMAIN}/cancel`,
+    success_url: `${process.env.REACT_APP_REACT_APP_DOMAIN}/success/${uniqueToken}?billingId=${billingId}`,
+    cancel_url: `${process.env.REACT_APP_REACT_APP_DOMAIN}/cancel`,
   });
 
   res.json({ id: session.id });
@@ -96,8 +96,11 @@ function calculateTotalAmount(booksFee, tuitionFee, activityFee) {
 
   return totalAmount;
 }
-const endpointSecret =
-  "whsec_63939d4265110ae1d7f0b3b9ad73a055bf60e5ca30f48c01131807ae8e6e0517";
+const webhookUrl = process.env.REACT_APP_STRIPE_WEBHOOK_URL;
+const endpointSecretLocal = process.env.REACT_APP_STRIPE_ENDPOINT_SECRET_LOCAL;
+const endpointSecretProd = process.env.REACT_APP_STRIPE_ENDPOINT_SECRET_PROD;
+// const endpointSecret =
+//   "whsec_63939d4265110ae1d7f0b3b9ad73a055bf60e5ca30f48c01131807ae8e6e0517";
 
 app.post(
   "/webhook",
@@ -113,7 +116,9 @@ app.post(
         event = stripe.webhooks.constructEvent(
           request.body,
           signature,
-          endpointSecret
+          webhookUrl === "http://localhost:3000/webhook"
+            ? endpointSecretLocal
+            : endpointSecretProd
         );
       } catch (err) {
         console.log(`⚠️  Webhook signature verification failed.`, err.message);
