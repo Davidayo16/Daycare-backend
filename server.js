@@ -15,7 +15,12 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: ["https://daycare-app.onrender.com", "http://localhost:3000"],
+  // Add other CORS options as needed
+};
+
+app.use(cors(corsOptions));
 
 app.use(morgan());
 app.use("/webhook", express.raw({ type: "application/json" }));
@@ -71,7 +76,9 @@ app.post("/create-checkout-session", async (req, res) => {
     cancel_url: `${process.env.REACT_APP_DOMAIN}/cancel`,
   });
 
-  res.json({ id: session.id });
+console.log("Server response:", { id: session.id });
+res.json({ id: session.id });
+
 });
 
 app.get("/api/validate-token/:uniqueToken", (req, res) => {
