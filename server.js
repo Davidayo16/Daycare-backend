@@ -67,8 +67,8 @@ app.post("/create-checkout-session", async (req, res) => {
     ],
     mode: "payment",
     client_reference_id: billingId, // Pass the billing ID here
-    success_url: `${process.env.REACT_APP_REACT_APP_DOMAIN}/success/${uniqueToken}?billingId=${billingId}`,
-    cancel_url: `${process.env.REACT_APP_REACT_APP_DOMAIN}/cancel`,
+    success_url: `${process.env.REACT_APP_DOMAIN}/success/${uniqueToken}?billingId=${billingId}`,
+    cancel_url: `${process.env.REACT_APP_DOMAIN}/cancel`,
   });
 
   res.json({ id: session.id });
