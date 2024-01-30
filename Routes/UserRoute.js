@@ -443,7 +443,6 @@ userRoute.get(
 // ****GET ALL ENROLLMENTS ***
 userRoute.get(
   "/enrollmentss",
-
   protectStaff,
   asyncHandler(async (req, res) => {
     try {

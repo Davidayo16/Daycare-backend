@@ -2,7 +2,7 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
 import Billing from "../Models/BillingSchema.js";
-import { protect, protectChild } from "../Middleware/AuthMiddleware.js";
+import { protect, protectChild, protectStaff } from "../Middleware/AuthMiddleware.js";
 
 const billingRoute = express.Router();
 
@@ -75,7 +75,7 @@ billingRoute.get(
 
 billingRoute.get(
   "/billingg/:id",
-
+  protectStaff,
   asyncHandler(async (req, res) => {
     const childId = req.params.id;
 

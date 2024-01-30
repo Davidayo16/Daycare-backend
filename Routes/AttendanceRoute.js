@@ -2,7 +2,7 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import generateToken from "./../Utils/GenerateToken.js";
-import { protect, protectChild } from "../Middleware/AuthMiddleware.js";
+import { protect, protectChild, protectStaff } from "../Middleware/AuthMiddleware.js";
 import moment from "moment";
 import Parent from "../Models/ParentModel.js";
 import Child from "../Models/ChildModel.js";
@@ -178,7 +178,7 @@ attendanceRoute.get(
 
 attendanceRoute.put(
   "/update-attendance-status/:attendanceId",
-
+protectStaff,
   asyncHandler(async (req, res) => {
     try {
       const { attendanceId } = req.params;
@@ -217,6 +217,7 @@ attendanceRoute.put(
 
 attendanceRoute.get(
   "/attendance-historyy/:id",
+  protectStaff,
   asyncHandler(async (req, res) => {
     try {
       const childId = req?.params.id;
